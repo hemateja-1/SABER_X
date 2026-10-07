@@ -20,6 +20,8 @@ import {
   Eye,
   FileCode,
   FolderOpen,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react'
 
 import { Card, CardContent } from '@/components/ui/card'
@@ -72,7 +74,8 @@ const BEN14K_WORKSPACE_SCENES = [
 ]
 
 export default function CustomImageQueryUpload({ className }: CustomImageQueryUploadProps) {
-  const [uploadMode, setUploadMode] = useState<'folder' | 'files' | 'single' | 'preset'>('folder')
+  const [isExpanded, setIsExpanded] = useState<boolean>(false)
+  const [uploadMode, setUploadMode] = useState<'single' | 'files' | 'folder' | 'preset'>('single')
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([])
   const [folderName, setFolderName] = useState<string | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
@@ -181,70 +184,87 @@ export default function CustomImageQueryUpload({ className }: CustomImageQueryUp
   return (
     <div className={cn('w-full space-y-6 font-sans', className)}>
       {/* Upload & Scene Selection Header Card */}
-      <Card className="border-border/60 bg-card/60 backdrop-blur-xs shadow-sm overflow-hidden border-t-4 border-t-[#FBBA72]">
-        <CardContent className="p-5 space-y-4">
+      <Card className="border-border/60 bg-card/60 backdrop-blur-xs shadow-sm overflow-hidden border-t-2 border-t-[#FBBA72]/50">
+        <CardContent className="p-4 space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <FolderPlus className="size-4 text-[#FBBA72]" />
-                <h3 className="text-base font-bold text-foreground">
-                  BEN-14K Scene Folder & Multi-Band Query Upload
+                <h3 className="text-sm font-bold text-foreground">
+                  Custom External Satellite Image / Multi-Band Upload
                 </h3>
+                <Badge variant="outline" className="border-emerald-500/40 text-emerald-400 bg-emerald-500/10 text-[10px] font-mono">
+                  Optional Tool
+                </Badge>
               </div>
               <p className="text-xs text-muted-foreground">
-                Upload an entire BEN-14K scene folder containing multiple spectral band files (<code className="font-mono text-xs">B01-B12.tif</code>, <code className="font-mono text-xs">VV/VH.tif</code>, <code className="font-mono text-xs">all.npy</code>) or select from workspace dataset folders.
+                <span className="text-[#FBBA72] font-semibold">Ready to Search:</span> You do <span className="font-semibold text-foreground">NOT</span> need to upload files. Your 14,832 BEN-14K scenes are already indexed and active above. Use this tool only if you wish to test custom images from outside the dataset.
               </p>
             </div>
 
-            {/* Modality Selector Chips */}
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider font-mono">
-                Sensor Modality:
-              </span>
-              <button
-                onClick={() => {
-                  setModality('s1')
-                  setHasResults(false)
-                }}
-                className={cn(
-                  'px-3 py-1 rounded-full text-xs font-semibold border transition-all cursor-pointer font-sans',
-                  modality === 's1'
-                    ? 'border-sky-500/60 bg-sky-500/15 text-sky-400 font-bold'
-                    : 'border-border/60 bg-muted/20 text-muted-foreground hover:text-foreground',
-                )}
-              >
-                Sentinel-1 SAR Radar
-              </button>
-              <button
-                onClick={() => {
-                  setModality('s2')
-                  setHasResults(false)
-                }}
-                className={cn(
-                  'px-3 py-1 rounded-full text-xs font-semibold border transition-all cursor-pointer font-sans',
-                  modality === 's2'
-                    ? 'border-[#FBBA72]/60 bg-[#FBBA72]/15 text-[#FBBA72] font-bold'
-                    : 'border-border/60 bg-muted/20 text-muted-foreground hover:text-foreground',
-                )}
-              >
-                Sentinel-2 Optical
-              </button>
-            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="h-8 text-xs font-semibold gap-1.5 border-border/60"
+            >
+              {isExpanded ? <ChevronUp className="size-3.5" /> : <ChevronDown className="size-3.5" />}
+              {isExpanded ? 'Hide Upload Tool' : 'Upload External Image (Optional)'}
+            </Button>
           </div>
+
+          {isExpanded && (
+            <>
+              {/* Modality Selector Chips */}
+              <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border/40 pt-3">
+                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider font-mono">
+                  Target Sensor Modality:
+                </span>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => {
+                      setModality('s1')
+                      setHasResults(false)
+                    }}
+                    className={cn(
+                      'px-3 py-1 rounded-full text-xs font-semibold border transition-all cursor-pointer font-sans',
+                      modality === 's1'
+                        ? 'border-sky-500/60 bg-sky-500/15 text-sky-400 font-bold'
+                        : 'border-border/60 bg-muted/20 text-muted-foreground hover:text-foreground',
+                    )}
+                  >
+                    Sentinel-1 SAR Radar
+                  </button>
+                  <button
+                    onClick={() => {
+                      setModality('s2')
+                      setHasResults(false)
+                    }}
+                    className={cn(
+                      'px-3 py-1 rounded-full text-xs font-semibold border transition-all cursor-pointer font-sans',
+                      modality === 's2'
+                        ? 'border-[#FBBA72]/60 bg-[#FBBA72]/15 text-[#FBBA72] font-bold'
+                        : 'border-border/60 bg-muted/20 text-muted-foreground hover:text-foreground',
+                    )}
+                  >
+                    Sentinel-2 Optical
+                  </button>
+                </div>
+              </div>
 
           {/* Upload Method Tabs */}
           <div className="flex flex-wrap items-center gap-2 border-b border-border/40 pb-3">
             <button
-              onClick={() => setUploadMode('folder')}
+              onClick={() => setUploadMode('single')}
               className={cn(
                 'px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 font-sans',
-                uploadMode === 'folder'
+                uploadMode === 'single'
                   ? 'bg-[#FBBA72]/15 border border-[#FBBA72]/40 text-[#FBBA72]'
                   : 'bg-muted/20 border border-border/40 text-muted-foreground hover:text-foreground',
               )}
             >
-              <FolderOpen className="size-3.5" />
-              BEN-14K Folder Upload (All Bands)
+              <ImageIcon className="size-3.5" />
+              Single Image (PNG / JPG / TIF)
             </button>
             <button
               onClick={() => setUploadMode('files')}
@@ -257,6 +277,18 @@ export default function CustomImageQueryUpload({ className }: CustomImageQueryUp
             >
               <Layers className="size-3.5" />
               Multi-Band TIF Files Select
+            </button>
+            <button
+              onClick={() => setUploadMode('folder')}
+              className={cn(
+                'px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 font-sans',
+                uploadMode === 'folder'
+                  ? 'bg-[#FBBA72]/15 border border-[#FBBA72]/40 text-[#FBBA72]'
+                  : 'bg-muted/20 border border-border/40 text-muted-foreground hover:text-foreground',
+              )}
+            >
+              <FolderOpen className="size-3.5" />
+              BEN-14K Folder Upload (All Bands)
             </button>
             <button
               onClick={() => setUploadMode('preset')}
@@ -405,16 +437,20 @@ export default function CustomImageQueryUpload({ className }: CustomImageQueryUp
                   ) : (
                     <>
                       <div className="size-10 rounded-full bg-[#FBBA72]/15 border border-[#FBBA72]/30 flex items-center justify-center text-[#FBBA72]">
-                        {uploadMode === 'folder' ? <FolderPlus className="size-5" /> : <Layers className="size-5" />}
+                        {uploadMode === 'single' ? <ImageIcon className="size-5" /> : uploadMode === 'folder' ? <FolderPlus className="size-5" /> : <Layers className="size-5" />}
                       </div>
                       <div className="space-y-1">
                         <p className="text-xs font-bold text-foreground">
-                          {uploadMode === 'folder'
+                          {uploadMode === 'single'
+                            ? 'Click to select or drag a Satellite Image (PNG, JPG, TIF)'
+                            : uploadMode === 'folder'
                             ? 'Click to select or drag BEN-14K Scene Folder'
                             : 'Click to select multiple spectral band TIF files'}
                         </p>
                         <p className="text-[11px] text-muted-foreground">
-                          Uploads all band files (<code className="font-mono text-xs">B01-B12.tif</code>, <code className="font-mono text-xs">VV/VH.tif</code>, <code className="font-mono text-xs">all.npy</code>) for a single BEN-14K scene
+                          {uploadMode === 'single'
+                            ? 'Upload a single satellite image crop to run instant visual retrieval'
+                            : 'Uploads all band files (B01-B12.tif, VV/VH.tif, all.npy) for a single BEN-14K scene'}
                         </p>
                       </div>
                     </>
@@ -449,6 +485,8 @@ export default function CustomImageQueryUpload({ className }: CustomImageQueryUp
               </div>
             </div>
           </div>
+            </>
+          )}
         </CardContent>
       </Card>
 

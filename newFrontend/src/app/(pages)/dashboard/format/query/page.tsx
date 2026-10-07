@@ -23,6 +23,7 @@ import { useRetrievalParams } from '@/contexts/retrieval-params-context'
 
 import MultiSensorInspector from '@/components/shared/MultiSensorInspector'
 import CustomImageQueryUpload from '@/components/shared/CustomImageQueryUpload'
+import DatasetGalleryBrowser from '@/components/shared/DatasetGalleryBrowser'
 
 /* ── API types ─────────────────────────────────────────────── */
 interface Candidate {
@@ -342,11 +343,14 @@ export default function QueryPage() {
 
   return (
     <div className='w-full space-y-6 font-sans'>
+      {/* ── Real Satellite Dataset Browser ── */}
+      <DatasetGalleryBrowser />
+
       {/* ── Custom Image Query Upload ── */}
       <CustomImageQueryUpload />
 
       {/* ── Top query image card ── */}
-      <Card className='border-border/60 shadow-sm overflow-hidden'>
+      <Card id='retrieval-results-section' className='border-border/60 shadow-sm overflow-hidden scroll-mt-6'>
         <CardContent className='p-3'>
           {/* Query Scene Details */}
           <div className='flex flex-wrap items-center justify-between gap-3 text-sm font-sans border-b border-border/40 pb-3 mb-3'>

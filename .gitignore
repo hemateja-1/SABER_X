@@ -34,10 +34,33 @@ __pycache__/
 
 # Project checkpoints & data outputs
 checkpoints/
+checkpoints/**
 /Datasets/
 /datasets/
+datasets/
+benv1_14k/
 *.pth
+*.pth*
+*.mat
+*.npy
+*.npz
+*.tif
+*.tiff
+*.h5
+*.hdf5
+*.bin
+*.tar
+*.tar.gz
 saber_search_db.pth
+saber_search_db*.pth
+
+# Next.js and build caches
+.next/
+newFrontend/.next/
+frontend/.next/
+newFrontend/node_modules/
+frontend/node_modules/
+.agents/
 
 
 # Old dev workspaces (merged into Saber/)

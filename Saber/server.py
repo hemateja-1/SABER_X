@@ -470,33 +470,52 @@ def get_dataset_stats(name: str = "ben14k"):
         }
 
 @app.get("/api/dataset/samples")
-def get_samples(dataset_name: str = "ben14k", class_index: Optional[int] = None, page: int = 1, limit: int = 12):
+def get_samples(dataset_name: str = "ben14k", modality: str = "s2", class_index: Optional[int] = None, page: int = 1, limit: int = 12):
     """Returns sample items from dataset for gallery browser picker."""
-    ds = state.ben14k_dataset if dataset_name.lower() == "ben14k" else state.dsrsid_dataset
+    is_dsrsid = dataset_name.lower() == "dsrsid"
+    ds = state.dsrsid_dataset if is_dsrsid else state.ben14k_dataset
     if ds is None:
         ds = state.ben14k_dataset
+        is_dsrsid = False
         
+    if ds is None:
+        return {"total": 0, "page": page, "limit": limit, "items": []}
+
+    class_list = DSRSID_CLASSES if is_dsrsid else BIGEARTHNET_19_CLASSES
     total = len(ds)
-    start = (page - 1) * limit
+    start = max(0, (page - 1) * limit)
     end = min(start + limit, total)
     
     items = []
     for idx in range(start, end):
         sample = ds[idx]
         name = sample.get("name", f"sample_{idx}.png")
-        label = sample["label"].numpy()
-        
-        if class_index is not None and label[class_index] < 0.5:
-            continue
+        label_raw = sample["label"]
+        if hasattr(label_raw, "numpy"):
+            label = label_raw.numpy()
+        else:
+            label = np.array(label_raw)
             
-        img_arr = sample["image"].numpy()
-        thumbnail_b64 = array_to_base64_png(img_arr, modality="s2")
+        if is_dsrsid:
+            lbl_idx = int(label.item()) if label.ndim == 0 else int(label[0])
+            if class_index is not None and lbl_idx != class_index:
+                continue
+            active_classes = [class_list[lbl_idx]] if lbl_idx < len(class_list) else []
+            label_indices = [lbl_idx]
+        else:
+            if class_index is not None and label[class_index] < 0.5:
+                continue
+            label_indices = np.where(label > 0.5)[0].tolist()
+            active_classes = [class_list[i] for i in label_indices if i < len(class_list)]
+            
+        img_arr = sample["image"].numpy() if hasattr(sample["image"], "numpy") else np.array(sample["image"])
+        thumbnail_b64 = array_to_base64_png(img_arr, modality=modality)
         
         items.append({
             "index": idx,
             "name": name,
-            "label_indices": np.where(label > 0.5)[0].tolist(),
-            "active_classes": [BIGEARTHNET_19_CLASSES[i] for i in np.where(label > 0.5)[0] if i < len(BIGEARTHNET_19_CLASSES)],
+            "label_indices": label_indices,
+            "active_classes": active_classes,
             "thumbnail": thumbnail_b64
         })
         
