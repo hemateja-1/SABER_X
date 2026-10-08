@@ -39,15 +39,18 @@ export default function FooterSection({ className }: { className?: string }) {
             </FooterColumn>
             <FooterColumn>
               <h3 className="text-sm font-semibold pt-1">Links</h3>
-              <a href="https://github.com/SK8-infi/SABER" target="_blank" rel="noopener noreferrer" className="text-muted-foreground text-sm hover:text-foreground transition-colors">GitHub</a>
-              <a href="https://www.isro.gov.in" target="_blank" rel="noopener noreferrer" className="text-muted-foreground text-sm hover:text-foreground transition-colors">ISRO</a>
-              <a href="https://sentinel.esa.int" target="_blank" rel="noopener noreferrer" className="text-muted-foreground text-sm hover:text-foreground transition-colors">ESA Sentinel</a>
+              <a href="https://github.com/hemateja-1/SABER_X" target="_blank" rel="noopener noreferrer" className="text-muted-foreground text-sm hover:text-foreground transition-colors">GitHub (SABER_X)</a>
+              <a href="/dashboard/format/disaster-command" className="text-muted-foreground text-sm hover:text-foreground transition-colors">Disaster Command</a>
+              <a href="/dashboard/format/pitch-deck" className="text-muted-foreground text-sm hover:text-foreground transition-colors">Pitch Deck</a>
+              <a href="https://www.isro.gov.in" target="_blank" rel="noopener noreferrer" className="text-muted-foreground text-sm hover:text-foreground transition-colors">ISRO Bhuvan</a>
             </FooterColumn>
           </FooterContent>
           <FooterBottom>
-            <div className="text-sm text-muted-foreground">© 2026 Team Sentinel8 · SABER · ISRO BAH Grand Finale</div>
+            <div className="text-xs text-muted-foreground">
+              © 2026 ABV-IIITM Gwalior · Chandaluri Hemateja, Shivansh Katiyar, Prabal Poddar, Srijan Singh · Ideas for India 2026 (Optum)
+            </div>
             <div className="flex items-center gap-4">
-              <span className="text-xs text-muted-foreground">Copernicus Sentinel data © ESA 2023–2026</span>
+              <span className="text-xs text-muted-foreground">Sovereign Space Deep-Tech</span>
               <ModeToggle />
             </div>
           </FooterBottom>

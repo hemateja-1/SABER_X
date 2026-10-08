@@ -10,6 +10,7 @@ import { Zap, Database, Cpu } from 'lucide-react'
 
 // Component Imports
 import ModeToggle from '@/components/layout/ModeToggle'
+import NVIDIAJetsonEdgeBar from '@/components/shared/NVIDIAJetsonEdgeBar'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -55,7 +56,10 @@ const Header = () => {
             </BreadcrumbList>
           </Breadcrumb>
         </div>
-        <div className='flex items-center gap-3'>
+        <div className='flex items-center gap-2 sm:gap-3'>
+          {/* Feature 4: Sovereign Air-Gapped Edge Telemetry Header Pill */}
+          <NVIDIAJetsonEdgeBar variant='header-pill' />
+
           <ModeToggle />
 
           {/* Live Telemetry Pill Cards */}

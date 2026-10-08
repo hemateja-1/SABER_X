@@ -28,12 +28,17 @@ interface HeroProps {
 
 const DEFAULT_HERO_BUTTONS: HeroButtonProps[] = [
   {
-    href: siteConfig.getStartedUrl,
-    text: "Get Started",
+    href: "/dashboard/format/disaster-command",
+    text: "🇮🇳 Disaster Mission Control",
     variant: "default",
   },
   {
-    href: "https://github.com/SK8-infi/SABER",
+    href: "/dashboard/format/pitch-deck",
+    text: "📊 Ideas for India Pitch Deck",
+    variant: "glow",
+  },
+  {
+    href: siteConfig.url,
     text: "GitHub",
     variant: "glow",
     icon: <Github className="mr-2 size-4" />,
@@ -42,9 +47,18 @@ const DEFAULT_HERO_BUTTONS: HeroButtonProps[] = [
 
 const DEFAULT_HERO_BADGE = (
   <div className="animate-appear flex flex-wrap items-center justify-center gap-2">
-    <Badge variant="outline">ISRO BAH 2026</Badge>
-    <Badge variant="outline">PS-11</Badge>
-    <Badge variant="outline">Team Sentinel8</Badge>
+    <Badge variant="outline" className="border-[#FBBA72]/60 text-[#FBBA72] bg-[#FBBA72]/10 font-bold">
+      🇮🇳 Ideas for India: Innovation Challenge 2026
+    </Badge>
+    <Badge variant="outline" className="border-sky-500/40 text-sky-400 bg-sky-500/10">
+      Sovereign Technology for India
+    </Badge>
+    <Badge variant="outline" className="border-emerald-500/40 text-emerald-400 bg-emerald-500/10">
+      ABV-IIITM Gwalior
+    </Badge>
+    <Badge variant="outline" className="border-border/60 text-muted-foreground">
+      TRL 6 Prototype
+    </Badge>
   </div>
 );
 
@@ -53,8 +67,8 @@ const DEFAULT_HERO_MOCKUP = (
 );
 
 export default function Hero({
-  title = "SABER — Sensor-Agnostic Bridged Embedding Retrieval",
-  description = "Cross-modal satellite image retrieval. SAR & Multispectral EO modalities unified onto a metric-optimised hypersphere via wavelength hypernetworks, LoRA adapters, and Conditional Flow Matching ODE latent bridges.",
+  title = "SABER — Eliminating Cloud Blindness for India's Disaster Response in 28ms",
+  description = "Sovereign Deep-Tech Satellite AI: Bridging Synthetic Aperture Radar (SAR) into clean Optical Earth Observation via Conditional Flow Matching (CFM) Neural ODEs to empower NDRF, SDMA, and ISRO during monsoon floods, landslides, and storms.",
   mockup = DEFAULT_HERO_MOCKUP,
   badge = DEFAULT_HERO_BADGE,
   buttons = DEFAULT_HERO_BUTTONS,

@@ -17,24 +17,25 @@ interface StatsProps {
 const DEFAULT_STATS: StatItemProps[] = [
   {
     label: "retrieval accuracy",
-    value: "73.5%",
-    description: "Cross-Modal F1@5 score (S1 SAR → S2 Optical)",
+    value: "76.71%",
+    description: "F1@5 Score (Outperforms World SOTA CR-JEPA 75.82%)",
   },
   {
     label: "rank precision",
-    value: "91.5%",
-    description: "Cross-Modal mAP (Mean Average Precision)",
+    value: "93.80%",
+    description: "Cross-Modal mAP (Mean Average Precision on BEN-14K)",
   },
   {
     label: "query latency",
-    value: "<28.5",
+    value: "28.48",
     suffix: "ms",
-    description: "Total end-to-end multi-sensor retrieval time",
+    description: "End-to-End latency (>99.9% faster than 72-hour delay)",
   },
   {
-    label: "parameter footprint",
-    value: "0.26%",
-    description: "Trainable LoRA parameter ratio (294.9K params)",
+    label: "memory footprint",
+    value: "918.7",
+    suffix: "MB",
+    description: "Peak VRAM (Sub-1GB edge ready for NVIDIA Jetson & microsats)",
   },
 ];
 

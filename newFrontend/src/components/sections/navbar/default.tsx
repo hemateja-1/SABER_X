@@ -48,16 +48,19 @@ export default function Navbar({
   name = "SABER",
   homeUrl = "/",
   mobileLinks = [
-    { text: "Results & Metrics", href: "/dashboard/format/training" },
-    { text: "Interactive Query Space", href: "/dashboard/format/embeddings" },
+    { text: "🇮🇳 Disaster Command (Live Demo)", href: "/dashboard/format/disaster-command" },
+    { text: "📊 Ideas for India Pitch Deck", href: "/dashboard/format/pitch-deck" },
     { text: "Classic Query Inspector", href: "/dashboard/format/query" },
+    { text: "Cloud-Free Retrieval", href: "/dashboard/format/cloud-free" },
+    { text: "Interactive Query Space", href: "/dashboard/format/embeddings" },
     { text: "Ablation Studies", href: "/dashboard/format/abliation" },
     { text: "Training Telemetry", href: "/dashboard/format/training" },
+    { text: "DSRSID 1,000 Search", href: "/dashboard/format/dsrsid-search" },
   ],
   actions = [
     {
-      text: "Launch Dashboard",
-      href: "/dashboard/format/embeddings",
+      text: "🇮🇳 Disaster Mission Control",
+      href: "/dashboard/format/disaster-command",
       isButton: true,
       variant: "default",
     },

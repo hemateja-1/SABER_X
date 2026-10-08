@@ -12,6 +12,7 @@ import {
   AlertCircle,
   LayersIcon,
   ImageIcon,
+  FileText,
 } from 'lucide-react'
 
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
@@ -22,8 +23,12 @@ import { UserViewLeftPanel, type SceneData } from '@/views/apps/users/view/user-
 import { useRetrievalParams } from '@/contexts/retrieval-params-context'
 
 import MultiSensorInspector from '@/components/shared/MultiSensorInspector'
+import CoreDisasterDeltaPanel, { type DeltaDamageInfo } from '@/components/shared/CoreDisasterDeltaPanel'
+import ISROConstellationSelector from '@/components/shared/ISROConstellationSelector'
 import CustomImageQueryUpload from '@/components/shared/CustomImageQueryUpload'
 import DatasetGalleryBrowser from '@/components/shared/DatasetGalleryBrowser'
+import NDRFDisasterSitrepModal from '@/components/shared/NDRFDisasterSitrepModal'
+import NVIDIAJetsonEdgeBar from '@/components/shared/NVIDIAJetsonEdgeBar'
 
 /* ── API types ─────────────────────────────────────────────── */
 interface Candidate {
@@ -33,6 +38,7 @@ interface Candidate {
   similarity_score: number
   jaccard_overlap: number
   active_classes: string[]
+  delta_damage?: DeltaDamageInfo
 }
 
 interface LatencyTelemetry {
@@ -284,6 +290,7 @@ export default function QueryPage() {
       query_index:     qIdx,
       source_modality: srcMod,
       target_modality: tgt,
+      constellation:   params.constellation || 'isro_eos04',
       top_k:           topK,
       enable_bridge:   useBridge,
       enable_rerank:   useRerank,
@@ -331,7 +338,7 @@ export default function QueryPage() {
       processResult(saberSameRes,  setSaberSameResult,  setSaberSameError,  setSaberSameLoading,  'SABER Same'),
       processResult(saberCrossRes, setSaberCrossResult, setSaberCrossError, setSaberCrossLoading, 'SABER Cross'),
     ])
-  }, [dataset, qIdx, srcMod, crossTarget, topK, bridge, rerank, odeSteps, setTelemetry])
+  }, [dataset, qIdx, srcMod, crossTarget, topK, bridge, rerank, odeSteps, params.constellation, setTelemetry])
 
   useEffect(() => { runQuery() }, [runQuery])
 
@@ -340,6 +347,7 @@ export default function QueryPage() {
   const topLoading = saberSameLoading && saberCrossLoading
 
   const [inspectorCandidate, setInspectorCandidate] = useState<Candidate | null>(null)
+  const [sitrepCandidate, setSitrepCandidate] = useState<Candidate | null>(null)
 
   return (
     <div className='w-full space-y-6 font-sans'>
@@ -348,6 +356,12 @@ export default function QueryPage() {
 
       {/* ── Custom Image Query Upload ── */}
       <CustomImageQueryUpload />
+
+      {/* ── FEATURE 2: ISRO Sovereign Constellation & Wavelength Hypernetwork Selector ── */}
+      <ISROConstellationSelector />
+
+      {/* ── FEATURE 4: NVIDIA Jetson Edge Telemetry Bar & Offline Sovereign Air-Gapped Mode ── */}
+      <NVIDIAJetsonEdgeBar variant='ribbon' />
 
       {/* ── Top query image card ── */}
       <Card id='retrieval-results-section' className='border-border/60 shadow-sm overflow-hidden scroll-mt-6'>
@@ -359,6 +373,16 @@ export default function QueryPage() {
               <span>{queryInfo?.name || `sample_${qIdx}`}</span>
             </div>
             <div className='flex items-center gap-2'>
+              {saberCrossResult?.candidates?.[0] && (
+                <Button
+                  size='sm'
+                  onClick={() => setSitrepCandidate(saberCrossResult.candidates[0])}
+                  className='h-7 text-xs font-mono font-bold bg-rose-500 hover:bg-rose-600 text-white cursor-pointer flex items-center gap-1.5 shadow-sm'
+                >
+                  <FileText className='size-3.5' />
+                  <span>1-Click NDRF SITREP</span>
+                </Button>
+              )}
               <Badge variant='outline' className='border-sky-500/40 text-sky-400 bg-sky-500/10 text-xs font-mono font-semibold'>
                 Source: {getModalityLabel(srcMod)}
               </Badge>
@@ -441,12 +465,32 @@ export default function QueryPage() {
         onInspectCandidate={c => setInspectorCandidate(c)}
       />
 
+      {/* ── CORE FEATURE 1: PIXEL-WISE DAMAGE DELTA MASK & INUNDATION ENGINE ── */}
+      {saberCrossResult && saberCrossResult.candidates && saberCrossResult.candidates.length > 0 && (
+        <div className='pt-2'>
+          <CoreDisasterDeltaPanel
+            query={queryInfo}
+            candidate={saberCrossResult.candidates[0]}
+            onOpenInspector={() => setInspectorCandidate(saberCrossResult.candidates[0])}
+          />
+        </div>
+      )}
+
       {/* Multi-Sensor Inspector Modal */}
       <MultiSensorInspector
         open={!!inspectorCandidate}
         onClose={() => setInspectorCandidate(null)}
         query={queryInfo}
         candidate={inspectorCandidate}
+      />
+
+      {/* 1-Click NDRF Disaster SITREP Report Modal */}
+      <NDRFDisasterSitrepModal
+        open={!!sitrepCandidate}
+        onClose={() => setSitrepCandidate(null)}
+        query={queryInfo}
+        candidate={sitrepCandidate}
+        constellationId={params.constellation || 'isro_eos04'}
       />
 
     </div>

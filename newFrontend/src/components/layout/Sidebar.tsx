@@ -11,7 +11,8 @@ import { usePathname, useSearchParams } from 'next/navigation'
 
 // Third-party Imports
 import * as Icon from 'lucide-react'
-import { ChevronRightIcon, SquareArrowOutUpRightIcon, RotateCw } from 'lucide-react'
+import { ChevronRightIcon, SquareArrowOutUpRightIcon, RotateCw, Cpu } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
 
 // Type Imports
 import type { MenuGroupSubItem, MenuItem, MenuSubItem } from '@/configs/navConfig'
@@ -367,6 +368,44 @@ const SidebarLayout = () => {
         {/* Dataset, Source, Target Gallery, Scene Index Controls below Format */}
         {showRetrievalControls && (
         <SidebarGroup className='gap-3 px-3 py-2 group-data-[collapsible=icon]:hidden'>
+          {/* ISRO CONSTELLATION (FEATURE 2) */}
+          <div className='flex flex-col gap-1.5'>
+            <SidebarGroupLabel className='text-sidebar-foreground/50 h-auto p-0 text-xs font-semibold tracking-wider uppercase flex items-center justify-between'>
+              <span>ISRO SATELLITE</span>
+              <span className='text-[9px] font-mono font-bold text-[#FBBA72] bg-[#FBBA72]/15 px-1 py-0.5 rounded'>
+                FEATURE 2
+              </span>
+            </SidebarGroupLabel>
+            <Select
+              value={params.constellation || 'isro_eos04'}
+              onValueChange={val => {
+                if (!val) return
+                if (val === 'isro_eos04') setParams({ constellation: 'isro_eos04', dataset: 'ben14k', srcMod: 's1', tgtMod: 's2' })
+                else if (val === 'isro_nisar') setParams({ constellation: 'isro_nisar', dataset: 'ben14k', srcMod: 's1', tgtMod: 's2' })
+                else if (val === 'isro_resourcesat') setParams({ constellation: 'isro_resourcesat', dataset: 'dsrsid', srcMod: 'ms', tgtMod: 'pan' })
+                else if (val === 'isro_cartosat') setParams({ constellation: 'isro_cartosat', dataset: 'dsrsid', srcMod: 'pan', tgtMod: 'ms' })
+                else if (val === 'sentinel1') setParams({ constellation: 'sentinel1', dataset: 'ben14k', srcMod: 's1', tgtMod: 's2' })
+                else if (val === 'sentinel2') setParams({ constellation: 'sentinel2', dataset: 'ben14k', srcMod: 's2', tgtMod: 's1' })
+              }}
+            >
+              <SelectTrigger className='border-border/60 bg-background/50 h-9 w-full rounded-lg text-xs'>
+                <SelectValue placeholder='Select ISRO Satellite' />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value='isro_eos04'>🇮🇳 ISRO EOS-04 / RISAT-1A</SelectItem>
+                  <SelectItem value='isro_nisar'>🇮🇳 ISRO-NASA NISAR</SelectItem>
+                  <SelectItem value='isro_resourcesat'>🇮🇳 ISRO Resourcesat-2A</SelectItem>
+                  <SelectItem value='isro_cartosat'>🇮🇳 ISRO Cartosat-3</SelectItem>
+                  <SelectItem value='sentinel1'>🇪🇺 Sentinel-1 SAR (ESA)</SelectItem>
+                  <SelectItem value='sentinel2'>🇪🇺 Sentinel-2 MSI (ESA)</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <Separator className='my-0.5 bg-border/40' />
+
           {/* DATASET */}
           <div className='flex flex-col gap-1.5'>
             <SidebarGroupLabel className='text-sidebar-foreground/50 h-auto p-0 text-xs font-semibold tracking-wider uppercase'>
@@ -576,6 +615,23 @@ const SidebarLayout = () => {
           </div>
 
           <Separator className='my-1 bg-border/40' />
+
+          {/* Feature 4: Sovereign Edge Mode Sidebar Indicator */}
+          <div className='mx-3 my-2 p-2.5 rounded-xl border border-emerald-500/30 bg-emerald-950/20 font-mono text-xs space-y-1.5'>
+            <div className='flex items-center justify-between'>
+              <span className='font-bold text-emerald-400 text-[11px] flex items-center gap-1.5'>
+                <Cpu className='size-3.5 text-emerald-400' />
+                JETSON AGX ORIN
+              </span>
+              <Badge className='bg-emerald-500/20 text-emerald-300 border-emerald-500/40 text-[9px] py-0 font-bold'>
+                AIR-GAPPED
+              </Badge>
+            </div>
+            <div className='flex items-center justify-between text-[10px] text-muted-foreground'>
+              <span>VRAM: <strong>918.7 MB</strong></span>
+              <span>Rate: <strong className='text-[#FBBA72]'>35.1 QPS</strong></span>
+            </div>
+          </div>
           </>
           )}
         </SidebarGroup>

@@ -61,14 +61,29 @@ export default function Navigation({
   ],
   formatModules = [
     {
-      title: "Interactive Query Space",
-      href: "/dashboard/format/embeddings",
-      description: "2D metric-preserving manifold projection with real-time cross-modal retrieval.",
+      title: "🇮🇳 Sovereign Disaster Command",
+      href: "/dashboard/format/disaster-command",
+      description: "Live Indian disaster corridor simulation (Assam/Bihar floods, Wayanad landslides) for NDRF & ISRO.",
+    },
+    {
+      title: "📊 Ideas for India Pitch Deck",
+      href: "/dashboard/format/pitch-deck",
+      description: "Interactive Q1–Q9 case study walkthrough, world SOTA leaderboard, and ABV-IIITM team showcase.",
     },
     {
       title: "Classic Query Inspector",
       href: "/dashboard/format/query",
-      description: "Single scene query engine inspecting candidate ranks & land-cover overlap.",
+      description: "Real 14,832-scene satellite gallery inspecting candidate ranks and land-cover overlap.",
+    },
+    {
+      title: "Cloud-Free Demonstration",
+      href: "/dashboard/format/cloud-free",
+      description: "Bypass 90%+ cloud-cover by querying Sentinel-1 SAR radar to retrieve clear-sky optical scenes.",
+    },
+    {
+      title: "Interactive Query Space",
+      href: "/dashboard/format/embeddings",
+      description: "2D metric-preserving manifold projection with real-time cross-modal retrieval.",
     },
     {
       title: "Ablation Studies",
@@ -79,11 +94,6 @@ export default function Navigation({
       title: "Training Telemetry",
       href: "/dashboard/format/training",
       description: "Real-time loss convergence curves, learning rates, and validation metrics.",
-    },
-    {
-      title: "Cloud-Free Demonstration",
-      href: "/dashboard/format/cloud-free",
-      description: "Bypass 90%+ cloud-cover by querying Sentinel-1 SAR radar to retrieve clear-sky optical scenes.",
     },
   ],
   components = [

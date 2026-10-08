@@ -6,6 +6,7 @@ export interface RetrievalParams {
   dataset: string       // api value e.g. 'ben14k', 'dsrsid'
   srcMod: string        // e.g. 's1', 'pan'
   tgtMod: string        // e.g. 's2', 'ms'
+  constellation: string // e.g. 'isro_eos04', 'isro_nisar', 'isro_resourcesat', 'isro_cartosat', 'sentinel1', 'sentinel2'
   qIdx: number
   topK: number
   bridge: boolean
@@ -30,6 +31,7 @@ const defaults: RetrievalParams = {
   dataset: 'ben14k',
   srcMod: 's1',
   tgtMod: 's2',
+  constellation: 'isro_eos04',
   qIdx: 0,
   topK: 5,
   bridge: true,
